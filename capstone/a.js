@@ -12,7 +12,7 @@ var connection =mysql.createConnection({
 
     host : 'localhost',
     user : 'root',
-    password :'98879498',
+    password :'capstone',
     database: 'capstone'
 });
 
