@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `weather`;
-CREATE TABLE `climate` (
-  `pudDate` datetime DEFAULT CURRENT_TIMESTAMP,
-  `time` int(11) DEFAULT NULL,
+CREATE TABLE `weather` (
+  `pudDate` timestamp null DEFAULT current_timestamp,
+  `time` int DEFAULT NULL,
   `temp` float DEFAULT NULL
 )
