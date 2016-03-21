@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var http=require('http');
 var mysql = require('mysql');
 var fs= require('fs');
 var xml2js=require('xml2js');
@@ -8,7 +9,7 @@ var cronJob = require('cron').CronJob; // 매시간 정보를 가져오기 위�
 
 
 app.use(express.static('public'));
-
+app.use(express.static('/xml'));
 //DB연결 부분
 var connection =mysql.createConnection({
 
@@ -35,7 +36,35 @@ var job=new cronJob(
 	function(){
 	console.log(" now download xml file from 기상청");
 	var url_meteo="http://www.kma.go.kr/wid/queryDFSRSS.jsp?zone=4141052000";
+	var filename="./xml/"+moment(new Date()	).format("YYYYMMDDHHmm")+".xml";
+
+	http.get(url_meteo,function(res){
+		var xml='';
+		res.on('data',function(chunk){
+			xml+=chunk;
+		});
+		res.on('end',function(chunk){
+			//console.log(xml);
+	        	fs.exists(filename,function(exists){
+			if(exists){
+			}
+			else{
+				fs.open(filename,'w+',function(err,fd){
+					if(err) throw err;
+					fs.writeFile(filename,xml,'utf8',function(err){
+					
+					});
+				});
 	
+			}
+			});
+		
+
+		});
+
+	});
+	//파일생성
+
 
 	},
 	function(){
@@ -100,10 +129,10 @@ app.get('/xml',function(req,res){
 
 		var parser= new xml2js.Parser();
 
-		fs.readFile('queryDFSRSS.xml',function(err,data){
+		fs.readFile('./xml/queryDFSRSS.xml',function(err,data){
 				parser.parseString(data,function(err,result){
 				var js_xml=result.rss.channel;
-				
+			//xml.rss.channel[0].item[0].description[0].body[0].descript	
 				js_xml=js_xml[0].item[0];
 				var city=(js_xml.category);
 				var pubDate=js_xml.description[0].header[0].tm+"";
@@ -117,7 +146,6 @@ app.get('/xml',function(req,res){
 				var  tp_rain =tp.pop;
 				//DB에 저장
 				var db_sql='INSERT INTO weather (time, temp, rain,pubDate) VALUES ('+tp_hour+ ','+ tp_temp+ ','+ tp_rain+','+pubDate+')';
-
 				console.log(db_sql);
 
 				connection.query(db_sql);
