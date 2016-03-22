@@ -6,6 +6,8 @@ var fs= require('fs');
 var xml2js=require('xml2js');
 var moment = require('moment-timezone');
 var cronJob = require('cron').CronJob; // 매시간 정보를 가져오기 위해서
+var ejs= require('ejs');
+
 
 
 app.use(express.static('public'));
@@ -169,12 +171,13 @@ app.get('/xml',function(req,res){
 
 
 app.get('/chart',function(req,res){
-		fs.readFile('linechart.html',function(err,data){
+		fs.readFile('char.ejs','utf8',function(err,data){
 			if(err)
 			console.log(err);
 			else{
 			res.writeHead(200,{'Content-Type':'text/html'});
-			res.end(data);
+			res.end(ejs.render(data,{
+			}));
 
 			}
 			});
