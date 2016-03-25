@@ -18,15 +18,19 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-      //  data.addColumn('string',( 'pubDate');
-        data.addColumn('number', 'time');
-        data.addColumn('number','temp');
-        data.addRows([
-          [3, 3],
-          [6, 10],
-          [9,5]
-        ]);
+        
+    	var hi= <%- JSON.stringify(hihi)%>;
 
+
+	data.addColumn('number', 'time');
+        data.addColumn('number','temp');
+
+	data.addRows([[1,2]]);
+	for (var i =0; i<hi.length; i++)
+	{
+		data.addRows([[hi[i].time,hi[i].temp]]);
+	}
+	//data.addRows([[hi[0].time,hi[0].temp]]);
         // Set chart options
         var options = {'title':'CLIMATE',
                        'width':400,
@@ -41,6 +45,7 @@
 
   <body>
     <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
+   <h1>캡스톤 디자인 오늘의 날씨예보 </h1> 
+   <div id="chart_div"></div>
   </body>
 </html>

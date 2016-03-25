@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>캡스톤디자인 날씨 데이터 </title>
+</head>
+<body>
+    <h1>캡스톤디자인 날씨 데이터 DB확인 </h1>
+    <hr />
+    <table width="100%" border="1">
+        <tr>
+            <th>측정시간</th>
+            <th>기록시간</th>
+            <th>temperature</th>
+            <th>rain</th>
+        </tr>
+        <% data.forEach(function (item, index) { %>
+        <tr>
+            <td><%= item.pubDate %></td>
+            <td><%= item.recordTime %></td>
+            <td><%= item.temp %></td>
+            <td><%= item.rain%></td>	
+        </tr>
+        <% }); %>
+    </table>
+</body>
+</html>
+
+

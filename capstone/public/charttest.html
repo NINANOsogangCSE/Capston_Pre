@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="http://code.angularjs.org/1.1.0/angular.min.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi?ext.js"></script>
+<script type='text/javascript'>
+
+var app = angular.module('myApp', []);
+app.controller('MyCtrl', function($scope) {
+		$scope.name = "Capstone Design"
+});
+app.directive('chart', function() {
+		return {
+restrict: 'A',
+link: function($scope, $elm, $attr) {
+// Create the data table.
+
+
+var info_string = <%-JSON.stringify(hihi)%>;
+//var info_json=JSON.parse(info_string);
+$scope.info=info_string;
+
+var data = new google.visualization.DataTable();
+data.addColumn('number', 'time');
+data.addColumn('number', 'temp');
+data.addRows([
+	[0, 3],
+	[1, 1]
+	]);
+
+// Set chart options
+var options = {'title':'Weather/Climate',
+'width':400,
+'height':300};
+
+// Instantiate and draw our chart, passing in some options.
+var chart = new google.visualization.LineChart($elm[0]);
+chart.draw(data, options);
+}
+}
+});
+
+google.setOnLoadCallback(function() {
+		angular.bootstrap(document.body, ['myApp']);
+		});
+google.load('visualization', '1', {packages: ['corechart']});
+
+</script>
+<body> 
+<div ng-controller = 'MyCtrl'>
+ {{name}}
+<div chart></div>
+</div>    
+</body>
+
+</html>
+

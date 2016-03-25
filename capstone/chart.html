@@ -1,7 +1,7 @@
+<!DOCTYPE html>
 <html>
   <head>
     <!--Load the AJAX API-->
-    <script src="/bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
 
@@ -18,17 +18,17 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-      //  data.addColumn('string',( 'pubDate');
-        data.addColumn('number', 'time');
-        data.addColumn('number','temp');
-        data.addRows([
-          [3, 3],
-          [6, 10],
-          [9,5]
-        ]);
+     	 data.addColumn('number', 'time');
+      	 data.addColumn('number','temp');
+
+	var dbdata=[];
+
+	data.addRows(
+          	 dbdata
+        );
 
         // Set chart options
-        var options = {'title':'CLIMATE',
+        var options = {'title':<%= JSON.stringify(title) %>,
                        'width':400,
                        'height':300};
 
@@ -42,5 +42,13 @@
   <body>
     <!--Div that will hold the pie chart-->
     <div id="chart_div"></div>
-  </body>
+    <%= title %>
+  
+    <% data.foreach(function (item,index){
+	 	var tp=item.time;
+		var tp2=item.temp;
+		dbdata.push([tp,tp2]);
+     });%>
+
+</body>
 </html>
