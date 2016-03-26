@@ -20,32 +20,63 @@
         var data = new google.visualization.DataTable();
         
     	var hi= <%- JSON.stringify(hihi)%>;
-
-
 	data.addColumn('number', 'time');
         data.addColumn('number','temp');
 
-	data.addRows([[1,2]]);
+//	for (var i =0; i<hi.length; i++)
+//	{
+//		data.addRows([[hi[i].time,hi[i].temp]]);
+//	}
+
+
+
+
+	var data2= new google.visualization.DataTable();
+	
+//	var hi= <%- JSON.stringify(hihi)%>;
+	data2.addColumn('number', 'time');
+        data2.addColumn('number','temp');
+
 	for (var i =0; i<hi.length; i++)
 	{
-		data.addRows([[hi[i].time,hi[i].temp]]);
+		if(hi[i].nextday ==0)
+			data.addRows([[hi[i].time,hi[i].temp]]);
+		else if(hi[i].nextday ==1)
+			data2.addRows([[hi[i].time,hi[i].temp]]);
 	}
-	//data.addRows([[hi[0].time,hi[0].temp]]);
+
+
+
+
         // Set chart options
         var options = {'title':'CLIMATE',
-                       'width':400,
-                       'height':300};
+                       'width':600,
+                       'height':400};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        
+
+
+var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
-      }
+    
+
+
+var chart2 = new google.visualization.LineChart(document.getElementById('chart_div2'));
+        chart2.draw(data2, options);
+
+
+  }
     </script>
   </head>
 
   <body>
     <!--Div that will hold the pie chart-->
-   <h1>캡스톤 디자인 오늘의 날씨예보 </h1> 
+   <h1>캡스톤 디자인 날씨 데이터  </h1> 
+   <h2> 현재 시각 :  <%= time %> </h2> 
+   <h3> 오늘 날씨 </h3>
    <div id="chart_div"></div>
-  </body>
+   <h3> 내일 날씨 </h3>
+   <div id="chart_div2"></div>
+</body>
 </html>

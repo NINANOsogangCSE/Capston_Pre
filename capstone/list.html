@@ -10,15 +10,19 @@
         <tr>
             <th>측정시간</th>
             <th>기록시간</th>
-            <th>temperature</th>
+	    <th>시간</th>
+            <th>오늘/내일/모레 </th>
+	    <th>temperature</th>
             <th>rain</th>
         </tr>
         <% data.forEach(function (item, index) { %>
         <tr>
-            <td><%= item.pubDate %></td>
-            <td><%= item.recordTime %></td>
-            <td><%= item.temp %></td>
-            <td><%= item.rain%></td>	
+           <td><%= item.pubDate %></td>
+           <td><%= item.recordTime %></td>
+           <td><%= item.time%>시 </td> 
+	   <td><%= item.nextday%> </td> 
+	  <td><%= item.temp %>도 </td>
+           <td><%= item.rain%></td>	
         </tr>
         <% }); %>
     </table>

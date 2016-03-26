@@ -32,9 +32,9 @@ connection.connect(function(err){
 
 });
 
-
+//한시간마다 한번씩
 var job=new cronJob(
-		"00 * * * * 0-6",
+		"00 00 * * * 0-6", 
 		function(){
 		console.log(" now download xml file from 기상청");
 		var url_meteo="http://www.kma.go.kr/wid/queryDFSRSS.jsp?zone=4141052000";
@@ -78,52 +78,27 @@ app.get('/', function (req, res) {
 
 		console.log(req.header);
 		res.send('Hello World!! Sogang Univ Capstone + Node.js + Mysql');
-		});
-
-
-app.get('/test',function(req,res){
-
-	var today=moment(new Date()).format("YYYYMMDD");
-	console.log(today);
-
-
-	fs.readFile('./public/charttest.html','utf8',function(err,data){
-			connection.query('SELECT time, temp FROM weather WHERE pubDate Like ?',today+"%",function(err,rows){
-				if(err){
-					throw err;
-				}
-				else{	
-					console.log(rows);	
-					 res.send(ejs.render(data,{hihi:rows}));
-				}
-			});
-		});
 });
 
 
 
-app.get('/test2',function(req,res){
-
-	var today=moment(new Date()).format("YYYYMMDD");
-	console.log(today);
+app.get('/chart',function(req,res){
+	var nowtime=moment(new Date()).format ("YYYY-MM-DD HH:mm:ss");
+	var today=moment(new Date()).format("YYYY-MM-DD HH");
+	console.log("chart >>" + today);
 
 
 	fs.readFile('./public/lineejs.html','utf8',function(err,data){
-			connection.query('SELECT time, temp FROM weather WHERE pubDate Like ?',today+"%",function(err,rows){
+			connection.query('SELECT nextday, time, temp FROM weather WHERE recordTime Like ?',today+"%",function(err,rows){
 				if(err){
 					throw err;
 				}
 				else{	
-	//				console.log(rows);	
-					 res.send(ejs.render(data,{hihi:rows}));
+					 res.send(ejs.render(data,{time : nowtime, hihi:rows}));
 				}
 			});
 		});
 });
-
-
-
-
 
 
 
@@ -146,8 +121,12 @@ function insertDb(filename)
 					var  tp_hour= tp.hour;
 					var  tp_temp= tp.temp;
 					var  tp_rain =tp.pop;
+					var  tp_nextday = tp.day;
+//					if(tp.day ==1)
+//						tp_hour =parseInt(tp_hour)+24;
+//						console.log(tp_hour);
 				//DB에 저장
-					var db_sql='INSERT INTO weather (time, temp, rain,pubDate) VALUES ('+tp_hour+ ','+ tp_temp+ ','+ tp_rain+','+pubDate+')';
+					var db_sql='INSERT INTO weather (time, temp, rain,pubDate,nextday) VALUES ('+tp_hour+ ','+ tp_temp+ ','+ tp_rain+','+pubDate+','+tp_nextday+')';
 					connection.query(db_sql);
 				}
 
@@ -179,33 +158,9 @@ app.get('/Db',function(req,res){
 
 
 
-app.get('/chart',function(req,res){
-	
-	var today=moment(new Date()).format("YYYYMMDDHH");
-	console.log(today);
-	
-	fs.readFile('chart.ejs','utf8',function(err,data){
-			connection.query('SELECT * FROM weather WHERE pubDate LIKE ?',today,function(err,rows){
-				if(err){
-						throw err;
-					}
-					else{
-						res.send(ejs.render(data,{data:rows}));
-					}
-			});
-	});
-	
-});
-
 app.listen(3000, function () {
 		console.log('Example app listening on port 3000!');
 		});
 
 
 ///////////////////////////////////////////////////////////////////
-var get_xml_file=function (url,data,callback){
-
-
-
-
-};
