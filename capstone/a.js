@@ -144,7 +144,7 @@ app.get('/Db',function(req,res){
 
 		var aa={};
 		fs.readFile('list.html','utf8',function(err,data){
-			connection.query('SELECT * FROM weather',function(err,rows){
+			connection.query('SELECT * FROM weather ORDER BY recordTime DESC, nextday ASC, time ASC',function(err,rows){
 				if(err){
 					throw err;
 				}
