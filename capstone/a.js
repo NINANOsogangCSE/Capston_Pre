@@ -101,6 +101,25 @@ app.get('/chart',function(req,res){
 });
 
 
+app.get('/chart_res',function(req,res){
+	var nowtime=moment(new Date()).format ("YYYY-MM-DD HH:mm:ss");
+
+	var today=moment(new Date()).format("YYYY-MM-DD HH");
+console.log("chart >>" + today);
+
+
+	fs.readFile('./public/lineejs2.html','utf8',function(err,data){
+			connection.query('SELECT nextday, time, temp FROM weather WHERE recordTime Like ?',today+"%",function(err,rows){
+				if(err){
+					throw err;
+				}
+				else{	
+					 res.send(ejs.render(data,{time : nowtime, hihi:rows}));
+				}
+			});
+		});
+});
+
 
 
 function insertDb(filename)

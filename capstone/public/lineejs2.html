@@ -22,18 +22,23 @@
     	var hi= <%- JSON.stringify(hihi)%>;
 	data.addColumn('number', 'time');
         data.addColumn('number','temperature');
-	var data2= new google.visualization.DataTable();
-	
+		var data2= new google.visualization.DataTable();
 	data2.addColumn('number', 'time');
-        data2.addColumn('number','temp');
+        data2.addColumn('number','temperature');
 
+	var data3= new google.visualization.DataTable();
+	data3.addColumn('number', 'time');
+        data3.addColumn('number','temperature');
 	for (var i =0; i<hi.length; i++)
 	{
 		if(hi[i].nextday ==0)
 			data.addRows([[hi[i].time,hi[i].temp]]);
 		else if(hi[i].nextday ==1)
 			data2.addRows([[hi[i].time,hi[i].temp]]);
+		else	
+			data3.addRows([[hi[i].time,hi[i].temp]]);
 	}
+
 
 
 
@@ -57,17 +62,27 @@
 
 
 var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    
+        if(hi.length >16)
+		chart.draw(data, options);
+	  else 
+		chart.draw(data2, options); //24시~2시 사이의 데이터
 
 
 var chart2 = new google.visualization.LineChart(document.getElementById('chart_div2'));
-        chart2.draw(data2, options);
+       if(hi.length >16)
+		  chart2.draw(data2, options);
+	else
+		  chart2.draw(data3, options);
 
-
+var chart3 = new google.visualization.LineChart(document.getElementById('chart_div3'));
+        if( hi.length > 16)
+		chart3.draw(data3, options);
+	else
+		chart3.draw(data,options) //just show empty graph 
   }
     </script>
   </head>
+
 
   <body>
     <!--Div that will hold the pie chart-->
@@ -77,5 +92,7 @@ var chart2 = new google.visualization.LineChart(document.getElementById('chart_d
    <div id="chart_div"></div>
    <h3> 내일 날씨 </h3>
    <div id="chart_div2"></div>
+   <h3> 모레 날씨 </h3>
+   <div id="chart_div3"></div>
 </body>
 </html>
